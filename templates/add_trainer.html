@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Trainer</title>
+</head>
+<body>
+    <h1>Add Trainer</h1>
+    <form id="trainerForm">
+        <label for="empid">Employee ID:</label><br>
+        <input type="number" id="empid" name="empid" required><br><br>
+
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label><br>
+        <input type="text" id="phone" name="phone" required><br><br>
+
+        <label for="subject_id">Subject ID:</label><br>
+        <input type="number" id="subject_id" name="subject_id" required><br><br>
+
+        <button type="submit">Add Trainer</button>
+    </form>
+
+    <p id="message"></p>
+
+    <br><br>
+    <a href="/">Back to Home</a>
+
+    <script>
+        document.getElementById('trainerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const trainer = {
+                empid: document.getElementById('empid').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                subject_id: document.getElementById('subject_id').value
+            };
+
+            const response = await fetch('/trainer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(trainer)
+            });
+
+            const result = await response.json();
+
+            if (response.status === 201) {
+                document.getElementById('message').innerText = "Trainer added successfully!";
+                document.getElementById('trainerForm').reset();
+            } else {
+                document.getElementById('message').innerText = result.error || "Something went wrong.";
+            }
+        });
+    </script>
+
+</body>
+</html>

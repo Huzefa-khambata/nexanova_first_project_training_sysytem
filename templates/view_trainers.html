@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Trainers</title>
+</head>
+<body>
+    <h1>All Trainers</h1>
+
+    <table border="1" id="trainersTable">
+        <thead>
+            <tr>
+                <th>Emp ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Subject ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Trainers data will come here -->
+        </tbody>
+    </table>
+
+    <br><br>
+    <a href="/">Back to Home</a>
+
+    <script>
+        async function fetchTrainers() {
+            const response = await fetch('/trainer');
+            const trainers = await response.json();
+
+            const tableBody = document.querySelector('#trainersTable tbody');
+            tableBody.innerHTML = "";
+
+            trainers.forEach(trainer => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${trainer.empid}</td>
+                    <td>${trainer.name}</td>
+                    <td>${trainer.email}</td>
+                    <td>${trainer.phone}</td>
+                    <td>${trainer.subject_id}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        fetchTrainers();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Subject</title>
+</head>
+<body>
+    <h1>Add Subject</h1>
+
+    <form id="subjectForm">
+        <label for="subject_id">Subject ID:</label><br>
+        <input type="number" id="subject_id" name="subject_id" required><br><br>
+
+        <label for="subject_name">Subject Name:</label><br>
+        <input type="text" id="subject_name" name="subject_name" required><br><br>
+
+        <button type="submit">Add Subject</button>
+    </form>
+
+    <p id="message"></p>
+
+    <br><br>
+    <a href="/">Back to Home</a>
+
+    <script>
+        document.getElementById('subjectForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const subject = {
+                subject_id: document.getElementById('subject_id').value,
+                subject_name: document.getElementById('subject_name').value
+            };
+
+            const response = await fetch('/subject', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(subject)
+            });
+
+            const result = await response.json();
+
+            if (response.status === 201) {
+                document.getElementById('message').innerText = "Subject added successfully!";
+                document.getElementById('subjectForm').reset();
+            } else {
+                document.getElementById('message').innerText = result.error || "Something went wrong.";
+            }
+        });
+    </script>
+
+</body>
+</html>

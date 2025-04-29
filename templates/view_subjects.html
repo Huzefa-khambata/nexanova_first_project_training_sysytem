@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Subjects</title>
+</head>
+<body>
+    <h1>All Subjects</h1>
+
+    <table border="1" id="subjectsTable">
+        <thead>
+            <tr>
+                <th>Subject ID</th>
+                <th>Subject Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Subjects data will be inserted here -->
+        </tbody>
+    </table>
+
+    <br><br>
+    <a href="/">Back to Home</a>
+
+    <script>
+        async function fetchSubjects() {
+            const response = await fetch('/subject');
+            const subjects = await response.json();
+
+            const tableBody = document.querySelector('#subjectsTable tbody');
+            tableBody.innerHTML = "";
+
+            subjects.forEach(subject => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subject.subject_id}</td>
+                    <td>${subject.subject_name}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        fetchSubjects();
+    </script>
+</body>
+</html>
