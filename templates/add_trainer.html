@@ -1,65 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Add Trainer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Trainer | NexaNova</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Add Trainer</h1>
-    <form id="trainerForm">
-        <label for="empid">Employee ID:</label><br>
-        <input type="number" id="empid" name="empid" required><br><br>
-
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
-
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="phone">Phone:</label><br>
-        <input type="text" id="phone" name="phone" required><br><br>
-
-        <label for="subject_id">Subject ID:</label><br>
-        <input type="number" id="subject_id" name="subject_id" required><br><br>
-
-        <button type="submit">Add Trainer</button>
+  <div class="nav-container">
+    <h1 class="animate">Add Trainer</h1>
+    
+    <form id="trainerForm" class="animate" style="animation-delay: 0.2s">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <label for="empid">Employee ID:</label>
+        <input type="number" id="empid" name="empid" required>
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required>
+        
+        <label for="subject_id">Subject ID:</label>
+        <input type="number" id="subject_id" name="subject_id" required>
+        
+        <button type="submit" class="nav-link" style="text-align: center; margin-top: 1.5rem;">Add Trainer</button>
+      </div>
     </form>
 
-    <p id="message"></p>
+    <p id="message" style="text-align: center; margin: 2rem 0;"></p>
+    
+    <a href="/" class="nav-link animate" style="animation-delay: 0.3s; max-width: 200px; margin: 0 auto;">Back to Home</a>
+  </div>
 
-    <br><br>
-    <a href="/">Back to Home</a>
+  <footer class="footer animate" style="animation-delay: 0.4s">
+    Designed and Developed by Huzefa Khambata
+  </footer>
 
-    <script>
-        document.getElementById('trainerForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+  <script>
+    document.getElementById('trainerForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
 
-            const trainer = {
-                empid: document.getElementById('empid').value,
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                subject_id: document.getElementById('subject_id').value
-            };
+      const trainer = {
+        empid: document.getElementById('empid').value,
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        subject_id: document.getElementById('subject_id').value
+      };
 
-            const response = await fetch('/trainer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(trainer)
-            });
+      const response = await fetch('/trainer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(trainer)
+      });
 
-            const result = await response.json();
-
-            if (response.status === 201) {
-                document.getElementById('message').innerText = "Trainer added successfully!";
-                document.getElementById('trainerForm').reset();
-            } else {
-                document.getElementById('message').innerText = result.error || "Something went wrong.";
-            }
-        });
-    </script>
-
+      const result = await response.json();
+      const messageEl = document.getElementById('message');
+      
+      if (response.status === 201) {
+        messageEl.innerText = "Trainer added successfully!";
+        messageEl.style.color = "green";
+        document.getElementById('trainerForm').reset();
+      } else {
+        messageEl.innerText = result.error || "Something went wrong.";
+        messageEl.style.color = "red";
+      }
+    });
+  </script>
 </body>
 </html>

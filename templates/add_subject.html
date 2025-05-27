@@ -1,54 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Add Subject</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Subject | NexaNova</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Add Subject</h1>
-
-    <form id="subjectForm">
-        <label for="subject_id">Subject ID:</label><br>
-        <input type="number" id="subject_id" name="subject_id" required><br><br>
-
-        <label for="subject_name">Subject Name:</label><br>
-        <input type="text" id="subject_name" name="subject_name" required><br><br>
-
-        <button type="submit">Add Subject</button>
+  <div class="nav-container">
+    <h1 class="animate">Add Subject</h1>
+    
+    <form id="subjectForm" class="animate" style="animation-delay: 0.2s">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <label for="subject_id">Subject ID:</label>
+        <input type="number" id="subject_id" name="subject_id" required>
+        
+        <label for="subject_name">Subject Name:</label>
+        <input type="text" id="subject_name" name="subject_name" required>
+        
+        <button type="submit" class="nav-link" style="text-align: center; margin-top: 1.5rem;">Add Subject</button>
+      </div>
     </form>
 
-    <p id="message"></p>
+    <p id="message" style="text-align: center; margin: 2rem 0;"></p>
+    
+    <a href="/" class="nav-link animate" style="animation-delay: 0.3s; max-width: 200px; margin: 0 auto;">Back to Home</a>
+  </div>
 
-    <br><br>
-    <a href="/">Back to Home</a>
+  <footer class="footer animate" style="animation-delay: 0.4s">
+    Designed and Developed by Huzefa Khambata
+  </footer>
 
-    <script>
-        document.getElementById('subjectForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+  <script>
+    messageEl.classList.add('show');
+setTimeout(() => messageEl.classList.remove('show'), 3000);
 
-            const subject = {
-                subject_id: document.getElementById('subject_id').value,
-                subject_name: document.getElementById('subject_name').value
-            };
+    document.getElementById('subjectForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
 
-            const response = await fetch('/subject', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(subject)
-            });
+      const subject = {
+        subject_id: document.getElementById('subject_id').value,
+        subject_name: document.getElementById('subject_name').value
+      };
 
-            const result = await response.json();
+      const response = await fetch('/subject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(subject)
+      });
 
-            if (response.status === 201) {
-                document.getElementById('message').innerText = "Subject added successfully!";
-                document.getElementById('subjectForm').reset();
-            } else {
-                document.getElementById('message').innerText = result.error || "Something went wrong.";
-            }
-        });
-    </script>
-
+      const result = await response.json();
+      const messageEl = document.getElementById('message');
+      
+      if (response.status === 201) {
+        messageEl.innerText = "Subject added successfully!";
+        messageEl.style.color = "green";
+        document.getElementById('subjectForm').reset();
+      } else {
+        messageEl.innerText = result.error || "Something went wrong.";
+        messageEl.style.color = "red";
+      }
+    });
+  </script>
 </body>
 </html>

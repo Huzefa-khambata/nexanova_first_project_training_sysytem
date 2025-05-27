@@ -1,46 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Subjects</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Subjects | NexaNova</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>All Subjects</h1>
-
-    <table border="1" id="subjectsTable">
+  <div class="nav-container">
+    <h1 class="animate">View Subjects</h1>
+    
+    <div class="animate" style="animation-delay: 0.2s; width: 100%; max-width: 800px; margin: 2rem auto; overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
         <thead>
-            <tr>
-                <th>Subject ID</th>
-                <th>Subject Name</th>
-            </tr>
+          <tr>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Subject ID</th>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Subject Name</th>
+          </tr>
         </thead>
-        <tbody>
-            <!-- Subjects data will be inserted here -->
+        <tbody id="subjectsTableBody">
+          <!-- Data will be inserted here by JavaScript -->
         </tbody>
-    </table>
+      </table>
+    </div>
+    
+    <a href="/" class="nav-link animate" style="animation-delay: 0.3s; max-width: 200px; margin: 0 auto;">Back to Home</a>
+  </div>
 
-    <br><br>
-    <a href="/">Back to Home</a>
+  <footer class="footer animate" style="animation-delay: 0.4s">
+    Designed and Developed by Huzefa Khambata
+  </footer>
 
-    <script>
-        async function fetchSubjects() {
-            const response = await fetch('/subject');
-            const subjects = await response.json();
+  <script>
+    async function fetchSubjects() {
+      const response = await fetch('/subject');
+      const subjects = await response.json();
+      const tableBody = document.getElementById('subjectsTableBody');
+      tableBody.innerHTML = '';
 
-            const tableBody = document.querySelector('#subjectsTable tbody');
-            tableBody.innerHTML = "";
+      subjects.forEach(subject => {
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid #eee';
+        row.innerHTML = `
+          <td style="padding: 1rem;">${subject.subject_id}</td>
+          <td style="padding: 1rem;">${subject.subject_name}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
 
-            subjects.forEach(subject => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${subject.subject_id}</td>
-                    <td>${subject.subject_name}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        fetchSubjects();
-    </script>
+    fetchSubjects();
+  </script>
 </body>
 </html>

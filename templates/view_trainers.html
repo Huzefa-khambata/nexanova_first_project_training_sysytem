@@ -1,55 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Trainers</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Trainers | NexaNova</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>All Trainers</h1>
-
-    <table border="1" id="trainersTable">
+  <div class="nav-container">
+    <h1 class="animate">View Trainers</h1>
+    
+    <div class="animate" style="animation-delay: 0.2s; width: 100%; max-width: 1000px; margin: 2rem auto; overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
         <thead>
-            <tr>
-                <th>Emp ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Subject ID</th>
-            </tr>
+          <tr>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Emp ID</th>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Name</th>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Email</th>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Phone</th>
+            <th style="padding: 1rem; text-align: left; background-color: var(--black); color: white;">Subject ID</th>
+          </tr>
         </thead>
-        <tbody>
-            <!-- Trainers data will come here -->
+        <tbody id="trainersTableBody">
+          <!-- Data will be inserted here by JavaScript -->
         </tbody>
-    </table>
+      </table>
+    </div>
+    
+    <a href="/" class="nav-link animate" style="animation-delay: 0.3s; max-width: 200px; margin: 0 auto;">Back to Home</a>
+  </div>
 
-    <br><br>
-    <a href="/">Back to Home</a>
+  <footer class="footer animate" style="animation-delay: 0.4s">
+    Designed and Developed by Huzefa Khambata
+  </footer>
 
-    <script>
-        async function fetchTrainers() {
-            const response = await fetch('/trainer');
-            const trainers = await response.json();
+  <script>
+    async function fetchTrainers() {
+      const response = await fetch('/trainer');
+      const trainers = await response.json();
+      const tableBody = document.getElementById('trainersTableBody');
+      tableBody.innerHTML = '';
 
-            const tableBody = document.querySelector('#trainersTable tbody');
-            tableBody.innerHTML = "";
+      trainers.forEach(trainer => {
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid #eee';
+        row.innerHTML = `
+          <td style="padding: 1rem;">${trainer.empid}</td>
+          <td style="padding: 1rem;">${trainer.name}</td>
+          <td style="padding: 1rem;">${trainer.email}</td>
+          <td style="padding: 1rem;">${trainer.phone}</td>
+          <td style="padding: 1rem;">${trainer.subject_id}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
 
-            trainers.forEach(trainer => {
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-                    <td>${trainer.empid}</td>
-                    <td>${trainer.name}</td>
-                    <td>${trainer.email}</td>
-                    <td>${trainer.phone}</td>
-                    <td>${trainer.subject_id}</td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        fetchTrainers();
-    </script>
-
+    fetchTrainers();
+  </script>
 </body>
 </html>
